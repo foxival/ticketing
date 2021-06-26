@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: # config options
+  name: expiration-depl # deployment or pod name
+spec: # attribute of object
+  replicas: 1 # amount of pod
+  selector: # selector by matchlabel app
+    matchLabels:
+      app: expiration
+  template: # give template name (label of app name)
+    metadata:
+      labels:
+        app: expiration
+    spec: # container info
+      containers:
+        - name: expiration
+          image: neveneve/expiration
+          env:
+            - name: NATS_CLIENT_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: NATS_URL
+              value: 'http://nats-srv:4222'
+            - name: NATS_CLUSTER_ID
+              value: ticketing
+            - name: REDIS_HOST
+              value: expiration-redis-srv
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: expiration-srv
+spec:
+  selector:
+    app: expiration
+  ports:
+    - name: expiration
+      protocol: TCP
+      port: 3000
+      targetPort: 3000

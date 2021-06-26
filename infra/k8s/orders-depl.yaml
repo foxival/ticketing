@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: # config options
+  name: orders-depl # deployment or pod name
+spec: # attribute of object
+  replicas: 1 # amount of pod
+  selector: # selector by matchlabel app
+    matchLabels:
+      app: orders
+  template: # give template name (label of app name)
+    metadata:
+      labels:
+        app: orders
+    spec: # container info
+      containers:
+        - name: orders
+          image: neveneve/orders
+          env:
+            - name: NATS_CLIENT_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: NATS_URL
+              value: 'http://nats-srv:4222'
+            - name: NATS_CLUSTER_ID
+              value: ticketing
+            - name: MONGO_URI
+              value: 'mongodb://orders-mongo-srv:27017/orders'
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef: # ref from kube secret
+                  name: jwt-secret
+                  key: JWT_KEY
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: orders-srv
+spec:
+  selector:
+    app: orders
+  ports:
+    - name: orders
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
