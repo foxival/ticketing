@@ -4,7 +4,7 @@ import { app } from './app';
 
 
 const start = async () => {
-    console.log('Starting up...')
+    console.log('Starting up...55555')
     if (!process.env.JWT_KEY){
         throw new Error('key is undefined');
     }
