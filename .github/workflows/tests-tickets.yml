@@ -2,7 +2,9 @@ name: tests-tickets
 
 # trigger
 on:
-  pull_request
+  pull_request:
+    paths:
+      - 'ticket/**'
   
 
 jobs:
