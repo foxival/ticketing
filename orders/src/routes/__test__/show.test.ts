@@ -2,6 +2,10 @@ import request from 'supertest';
 import { app } from '../../app';
 import { Ticket } from '../../models/ticket';
 
+
+it('', async() => {
+
+});
 // it('fetches the order', async () => {
 //   // Create a ticket
 //   const ticket = Ticket.build({
