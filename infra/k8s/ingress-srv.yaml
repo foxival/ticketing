@@ -7,7 +7,7 @@ metadata:
     nginx.ingress.kubernetes.io/use-regex: "true"
 spec:
   rules:
-    - host: www.foxival.com
+    - host: ticketing.dev
       http:
         paths:
           - path: /api/users/?(.*)
