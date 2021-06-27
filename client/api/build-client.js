@@ -6,7 +6,9 @@ export default ({ req }) => {
 
     return axios.create({
       //namespace of service.namespace.svc.cluster.local
-      baseURL: 'http://ingress-nginx-controller.ingress-nginx.svc.cluster.local',
+      baseURL: process.env.NODE_ENV === "development" 
+        ? 'http://ingress-nginx-controller.ingress-nginx.svc.cluster.local'
+        : 'https://www.foxival.com',
       headers: req.headers
     });
   } else {
